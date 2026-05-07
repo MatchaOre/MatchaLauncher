@@ -2,6 +2,7 @@ import { app, BrowserWindow } from 'electron'
 import { createRequire } from 'node:module'
 import { fileURLToPath } from 'node:url'
 import path from 'node:path'
+import os from "node:os";
 
 const require = createRequire(import.meta.url)
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
@@ -16,6 +17,17 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
 // │ │ └── preload.mjs
 // │
 process.env.APP_ROOT = path.join(__dirname, '..')
+
+switch(os.type().toLowerCase()){
+  case "drawin":
+    process.env.OS_TYPE = SystemType.macOS;
+    break;
+  case "windows_nt":
+    process.env.OS_TYPE = SystemType.Windows;
+    break;
+  default:
+    process.env.OS_TYPE = SystemType.Linux;
+}
 
 // 🚧 Use ['ENV_NAME'] avoid vite:define plugin - Vite@2.x
 export const VITE_DEV_SERVER_URL = process.env['VITE_DEV_SERVER_URL']
@@ -33,6 +45,7 @@ function createWindow() {
       preload: path.join(__dirname, 'preload.mjs'),
     },
   })
+  win.setMenuBarVisibility(false);
 
   // Test active push message to Renderer-process.
   win.webContents.on('did-finish-load', () => {

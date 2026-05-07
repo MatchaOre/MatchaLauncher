@@ -17,8 +17,16 @@ declare namespace NodeJS {
      */
     APP_ROOT: string
     /** /dist/ or /public/ */
-    VITE_PUBLIC: string
+    VITE_PUBLIC: string,
+    /** Operation System Type */
+    OS_TYPE: SystemType
   }
+}
+
+enum SystemType{
+  Windows,
+  Linux,
+  macOS
 }
 
 // Used in Renderer process, expose in `preload.ts`
